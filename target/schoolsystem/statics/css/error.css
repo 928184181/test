@@ -1,0 +1,15 @@
+.main{
+    text-align: center;
+}
+p{
+    font-size: 20px;
+    font-weight: 800;
+    color: gray;
+}
+img{
+    width: 450px;
+}
+a{
+    color: #0000b9;
+    text-decoration: none;
+}

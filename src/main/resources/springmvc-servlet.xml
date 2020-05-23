@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ xmlns:mvc="http://www.springframework.org/schema/mvc"
+ xmlns:context="http://www.springframework.org/schema/context"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans.xsd
+ http://www.springframework.org/schema/mvc
+ http://www.springframework.org/schema/mvc/spring-mvc.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context.xsd">
+ <!-- 扫描spring注解 -->
+<context:component-scan base-package="school.controller,school.service"/>
+
+<!-- 静态资源映射 -->
+<mvc:resources location="/statics/" mapping="/statics/**"></mvc:resources>
+
+<!-- 开启注解，消息转换器 -->
+<mvc:annotation-driven>
+    	<mvc:message-converters>
+    		<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+    			<property name="supportedMediaTypes">
+    				<list>
+    					<value>application/json;charset=UTF-8</value>
+    				</list>
+    			</property>
+    		</bean> 
+    		<bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+    			<property name="supportedMediaTypes">
+    				<list>
+    					<value>text/html;charset=UTF-8</value>
+    					<value>application/json;charset=UTF-8</value>
+    				</list>
+    			</property>
+    		</bean>
+    	</mvc:message-converters>
+</mvc:annotation-driven>
+
+<!--  多视图解析器 -->
+<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	<property name="favorParameter" value="true"/>
+	<property name="defaultContentType" value="text/html"/>
+	<property name="mediaTypes">
+		<map>
+			<entry key="html" value="text/html"/>
+			<entry key="json" value="application/json"/>
+			<entry key="xml" value="application/xml"/>
+		</map>
+	</property>
+	<property name="viewResolvers">
+		<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			<property name="prefix" value="/WEB-INF/jsp"/>
+			<property name="suffix" value=".jsp"/>
+		</bean>
+	</property>
+</bean>
+
+<!-- 文件上传解析器 -->
+<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<property name="maxUploadSize" value="5000000"></property>
+	<property name="defaultEncoding" value="UTF-8"></property>
+</bean>
+
+<!-- 全局异常处理 -->
+<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver ">
+	<property name="exceptionMappings">
+		<props>
+			<prop key="java.lang.RuntimeException">error</prop>
+		</props>
+	</property>
+</bean>
+
+<!--  配置拦截器 -->
+<mvc:interceptors>
+	<mvc:interceptor>
+		<mvc:mapping path="/**"/>
+		<mvc:exclude-mapping path="/login/**"/>
+		<mvc:exclude-mapping path="/Kaptcha/*"/>
+		<mvc:exclude-mapping path="/statics/**"/>
+		<bean class="school.util.SysInterceptor"></bean>
+	</mvc:interceptor>
+</mvc:interceptors>
+
+
+</beans>
+
+

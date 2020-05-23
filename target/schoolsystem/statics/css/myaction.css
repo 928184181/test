@@ -1,0 +1,253 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+.header{
+    background-color: #e5e5e5;
+}
+.header0{
+    float: left;
+}
+#user{
+    display: inline-block;
+    width: 80px;
+    text-align: left;
+}
+a{
+    text-decoration: none;
+}
+#time{
+    width: 1185px;
+    margin: 0px auto;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    text-align: right;
+    padding-right: 15px;
+}
+.header1{
+    width: 1200px;
+    height: 100px;
+    margin: 0px auto;
+}
+.imgheader{
+    float: left;
+}
+.psearch{
+    float: right;
+    margin-top: 10px;
+}
+#search{
+    height: 28px;
+    vertical-align:bottom;
+    width: 200px;
+    padding-left: 10px;
+}
+#imgsearch{
+    vertical-align:bottom;
+}
+.title{
+    margin: 35px 0px 0px 15px;
+    font-size: 35px;
+    float: left;
+    color: #d53c00;
+    font-weight: 900;
+}
+.header2{
+    width: 1200px;
+    margin: 10px auto 0px;
+}
+.nav{
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+    font-size: 22px;
+    font-weight: 800;
+    height: 40px;
+    line-height: 40px;
+    width: 175px;
+    text-align: center;
+}
+.nav0{
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+    font-size: 22px;
+    font-weight: 800;
+    height: 40px;
+    line-height: 40px;
+    width: 175px;
+    text-align: center;
+    background-color: #858cff;
+}
+#navid{
+    width: 136px;
+}
+.middle{
+    margin: 20px auto;
+    width: 1200px;
+    border: 1px solid gray;
+}
+.middle0{
+    margin: 10px 10px 0px;
+    width: 250px;
+    display: inline-block;
+}
+.middle1{
+    width: 1000px;
+    margin: 10px auto;
+}
+.footer{
+    background-color: #8f000b;
+}
+.bottom{
+    width: 1200px;
+    margin: 0px auto;
+}
+.imgbottom{
+    width: 1200px;
+}
+.fb{
+    margin: 10px 10px 10px 20px;
+    height: 35px;
+    width: 80px;
+    display: inline-block;
+    color: #696cd2;
+    font-weight: 800;
+    border-radius: 15px;
+    border: 1px solid gray;
+}
+
+li{
+    list-style: none;
+    height: 40px;
+    border-bottom: 1px dashed gray;
+    width: 1130px;
+    margin-left: 20px;
+    width: 1000px;
+}
+.cona0{
+    color: #0000b9;
+    line-height: 40px;
+    width: 450px;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 800;
+}
+.cona{
+    color:  black;
+    line-height: 40px;
+    width: 450px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    float: left;
+}
+.spanftr0{
+    display: inline-block;
+    margin: 0px 10px;
+    width: 120px;
+    text-align: center;
+    color: #0000b9;
+    font-size: 16px;
+    font-weight: 800;
+}
+.spanftr{
+    display: inline-block;
+    margin: 0px 10px;
+    width: 120px;
+    text-align: center;
+}
+.spantime0{
+    display: inline-block;
+    margin: 0px 10px;
+    width: 160px;
+    text-align: center;
+    color: #0000b9;
+    font-size: 16px;
+    font-weight: 800;
+}
+.spantime{
+    display: inline-block;
+    margin: 0px 10px;
+    width: 160px;
+    line-height: 40px;
+    text-align: center;
+}
+.spancount0{
+    display: inline-block;
+    margin: 0px 10px;
+    width: 120px;
+    text-align: center;
+    color: #0000b9;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.spanlook{
+    display: inline-block;
+    margin: 0px 10px;
+    width: 50px;
+    text-align: center;
+    color: black;
+    line-height: 40px;
+}
+.spandel{
+    display: inline-block;
+    margin: 0px 10px;
+    width: 50px;
+    text-align: center;
+    line-height: 40px;
+    color: black;
+}
+.pcount{
+    color: gray;
+    font-weight: 800;
+    float: right;
+    margin: 20px 20px 0px;
+}
+.page{
+    margin: 40px;
+    width: 1120px;
+    text-align: center;
+}
+.apage{
+    margin-right: 20px;
+    color: gray;
+}
+.apage1{
+    margin: 0px 20px;
+    color: gray;
+}
+.page1{
+    width: 1200px;
+    height: 300px;
+    text-align: center;
+    border: 1px solid gray;
+    margin: 20px auto;
+    display: none;
+}
+.pagecount{
+    margin-right: 30px;
+    color: gray;
+}
+.pageno{
+    width: 900px;
+    height: 300px;
+    text-align: center;
+    border: 1px solid gray;
+    margin: 20px auto;
+    display: none;
+}
+.pno{
+    color: gray;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 300px;
+}
+#myuser{
+    color: #ff541e;
+    font-weight: 800;
+}

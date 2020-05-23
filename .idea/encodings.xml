@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/school/util/AlipayConfig.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/actionpublish.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/backactionlook.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/backadmin.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/backgoods.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/backgoodslook.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/backjob.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/backjoblook.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/backlost.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/backlostlook.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/backmain.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/backnews.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/backnewslook.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/backusers.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/lostandfound.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/message.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/myaction.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/myjobpublish.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/mylost.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/mynews.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/newaction.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/newslook.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/publish.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/secondhand.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/statics/js/user.js" charset="UTF-8" />
+    <file url="PROJECT" charset="GBK" />
+  </component>
+</project>

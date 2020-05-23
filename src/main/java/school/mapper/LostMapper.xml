@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="school.mapper.LostMapper">
+    <insert id="addLost" parameterType="Users">
+        insert into `lost`(`title`,`content`,`address`,`pictureName`,`pictureAdd`,`userId`,`schoolId`,`claim`,`time`,`status`)values
+        (#{title},#{content},#{address},#{pictureName},#{pictureAdd},#{userId},#{schoolId},#{claim},#{time},#{status})
+    </insert>
+    <select id="lostMain" resultType="Lost">
+        SELECT `lost`.*,(SELECT `school`.`schoolName` FROM`school` WHERE `lost`.`schoolId` = `school`.`id`) AS `schoolName` FROM `lost` WHERE claim = 1 and `status` = 4 ORDER BY `time` DESC LIMIT 0,8
+    </select>
+    <select id="findLostById" resultType="Lost">
+        SELECT `lost`.*,(SELECT `school`.`schoolName` FROM`school` WHERE `lost`.`schoolId` = `school`.`id`) AS `schoolName`,
+        (SELECT `users`.userName FROM `users` WHERE `users`.`id` = `lost`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `lost`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `lost`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `lost`.`userId`)AS`qq`,
+        (select `claim`.`claim` from `claim` where `lost`.`claim` = `claim`.`id`) as `claimName`
+         FROM `lost` where `lost`.`id`=#{id}
+    </select>
+    <select id="getLostList" resultType="Lost">
+        SELECT `lost`.*,(SELECT `school`.`schoolName` FROM`school` WHERE `lost`.`schoolId` = `school`.`id`) AS `schoolName` FROM `lost`
+        <where>
+            `claim` = 1 and `status` = 4
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+        ORDER BY `time` DESC limit #{from},#{pageSize}
+    </select>
+    <select id="count" resultType="int">
+        SELECT count(*),(SELECT `school`.`schoolName` FROM`school` WHERE `lost`.`schoolId` = `school`.`id`) AS `schoolName` FROM `lost`
+        <where>
+            `claim` = 1 and `status` = 4
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+    <select id="getMyLostList" resultType="Lost">
+        SELECT `lost`.*,(SELECT `school`.`schoolName` FROM`school` WHERE `lost`.`schoolId` = `school`.`id`) AS `schoolName`,
+         (select `claim`.`claim` from `claim` where `lost`.`claim` = `claim`.`id`) as `claimName` FROM `lost`
+        where `userId` = #{userId}  ORDER BY `time` DESC limit #{from},#{pageSize}
+    </select>
+    <select id="myCount" resultType="int">
+        SELECT count(*),(SELECT `school`.`schoolName` FROM`school` WHERE `lost`.`schoolId` = `school`.`id`) AS `schoolName` FROM `lost`
+         where `userId` = #{userId}
+    </select>
+    <delete id="delLost" parameterType="int">
+        delete from `lost` where `id`=#{id}
+    </delete>
+    <update id="claim" parameterType="int">
+        update `lost` set `claim` = 2 where `id` = #{id}
+    </update>
+
+
+    <select id="getLostListAdmin" resultType="Lost">
+        SELECT `lost`.*,(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `lost`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `lost`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `lost`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `lost`.`userId`)AS`qq`,
+        (SELECT `status`.status FROM `status` WHERE `status`.`id` = `lost`.`status`)AS`statusName`,
+        (select `claim`.`claim` from `claim` where `lost`.`claim` = `claim`.`id`) as `claimName`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `lost`.`schoolId`)AS`schoolName` FROM `lost`
+        <where>
+            <if test="status !=0 and status != null">
+                and `status` = #{status}
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+        ORDER BY `time` DESC limit #{from},#{pageSize}
+    </select>
+    <select id="countAdmin" resultType="int">
+        SELECT count(*),(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `lost`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `lost`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `lost`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `lost`.`userId`)AS`qq`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `lost`.`schoolId`)AS`schoolName` FROM `lost`
+        <where>
+            <if test="status !=0 and status != null">
+                and `status` = #{status}
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+    <update id="pass" parameterType="int">
+        update `lost` set `status` = 4 where `id`=#{id}
+    </update>
+    <update id="noPass" parameterType="int">
+        update `lost` set `status` = 5 where `id`=#{id}
+    </update>
+    <delete id="delByUser" parameterType="int">
+        delete from `lost` where `userId`=#{userId}
+    </delete>
+</mapper>

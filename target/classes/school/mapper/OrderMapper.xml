@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="school.mapper.OrderMapper">
+    <insert id="addOrder" parameterType="Order">
+        insert into `order`(`goodsName`,`goodsContent`,`pictureName`,`pictureAdd`,`sellerId`,`time`,`price`,`count`,`buyId`,`orderNum`)values
+        (#{goodsName},#{goodsContent},#{pictureName},#{pictureAdd},#{sellerId},#{time},#{price},#{count},#{buyId},#{orderNum})
+    </insert>
+    <update id="updateStatus">
+        update `order` set `status` = #{status} where `orderNum` = #{orderNum}
+    </update>
+    <select id="buyOrder" resultType="Order">
+        SELECT `order`.*,(SELECT `users`.`userName` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS sellerName,
+(SELECT `users`.`qq` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS sellerQQ,
+(SELECT `users`.`phone` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS sellerPhone,
+(SELECT `users`.`weixin` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS sellerWeixin FROM `order` WHERE `buyId` = #{buyId}
+ORDER BY TIME DESC LIMIT #{from},#{pageSize}
+    </select>
+    <select id="buyCount" resultType="int">
+        SELECT count(*),(SELECT `users`.`userName` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS sellerName,
+(SELECT `users`.`qq` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS qq,
+(SELECT `users`.`phone` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS phone,
+(SELECT `users`.`weixin` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS weixin FROM `order` WHERE `buyId` = #{buyId}
+    </select>
+    <select id="sellerCount" resultType="int">
+        SELECT count(*),(SELECT `users`.`userName` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS sellerName,
+(SELECT `users`.`qq` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS sellerQQ,
+(SELECT `users`.`phone` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS sellerPhone,
+(SELECT `users`.`weixin` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS sellerWeixin FROM `order` WHERE `sellerId` = #{sellerId}
+    </select>
+
+    <select id="sellerOrder" resultType="Order">
+        SELECT `order`.*,(SELECT `users`.`userName` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS sellerName,
+(SELECT `users`.`qq` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS sellerQQ,
+(SELECT `users`.`phone` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS sellerPhone,
+(SELECT `users`.`weixin` FROM `users` WHERE `users`.`id`=`order`.`sellerId`) AS sellerWeixin FROM `order` WHERE `sellerId` = #{sellerId}
+ORDER BY TIME DESC LIMIT #{from},#{pageSize}
+    </select>
+</mapper>

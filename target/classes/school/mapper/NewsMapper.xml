@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="school.mapper.NewsMapper">
+    <insert id="addNews" parameterType="News">
+        insert into `news`(`title`,`content`,`pictureName1`,`pictureAdd1`,`pictureName2`,`pictureAdd2`,`pictureName3`,`pictureAdd3`,
+        `pictureName4`,`pictureAdd4`,`userId`,`time`,`schoolId`,`clicks`,`status`)values
+        (#{title},#{content},#{pictureName1},#{pictureAdd1},#{pictureName2},#{pictureAdd2},#{pictureName3},#{pictureAdd3},
+        #{pictureName4},#{pictureAdd4},#{userId},#{time},#{schoolId},#{clicks},#{status})
+    </insert>
+    <select id="findNewsMain" resultType="News">
+        select * from `news` WHERE `status`=4 ORDER BY `time` DESC LIMIT 0,20
+    </select>
+    <select id="findNewsById" resultType="News">
+         SELECT `news`.*,(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`qq`
+         FROM `news` WHERE  `id` = #{id}
+    </select>
+    <update id="updateClicks">
+          update `news` set `clicks` = #{clicks} where `id` = #{id}
+    </update>
+    <select id="getNewsList" resultType="News">
+        SELECT `news`.*,(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`qq`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `news`.`schoolId`)AS`schoolName` FROM `news`
+        <where>
+            `status` = 4
+            <if test="userId !=0 and userId != null">
+                and `userId` = #{userId}
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+        ORDER BY `time` DESC limit #{from},#{pageSize}
+    </select>
+    <select id="count" resultType="int">
+        SELECT count(*),(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`qq`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `news`.`schoolId`)AS`schoolName` FROM `news`
+        <where>
+            `status` = 4
+            <if test="userId !=0 and userId != null">
+                and `userId` = #{userId}
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+    <select id="myCount" resultType="int">
+        SELECT count(*),(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`qq`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `news`.`schoolId`)AS`schoolName` FROM `news`
+         where `userId` = #{userId}
+    </select>
+    <select id="getMyNewsList" resultType="News">
+        SELECT `news`.*,(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`qq`,
+        (select `status`.status from `status` where `news`.`status`= `status`.`id`)as `statusName`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `news`.`schoolId`)AS`schoolName` FROM `news`
+         where `userId` = #{userId}
+         ORDER BY `time` DESC limit #{from},#{pageSize}
+    </select>
+    <delete id="delNews" parameterType="int">
+        delete from `news` where `id` = #{id}
+    </delete>
+    <select id="getNewsListClicks" resultType="News">
+        SELECT `news`.*,(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`qq`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `news`.`schoolId`)AS`schoolName` FROM `news`
+        <where>
+            `status` = 4
+            <if test="userId !=0 and userId != null">
+                and `userId` = #{userId}
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+        ORDER BY `clicks` DESC  limit #{from},#{pageSize}
+    </select>
+    <select id="getNewsListTime" resultType="News">
+        SELECT `news`.*,(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`qq`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `news`.`schoolId`)AS`schoolName` FROM `news`
+        <where>
+            `status` = 4
+            <if test="userId !=0 and userId != null">
+                and `userId` = #{userId}
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+        ORDER BY `time` DESC limit #{from},#{pageSize}
+    </select>
+
+    <select id="getNewsListAdmin" resultType="News">
+        SELECT `news`.*,(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`qq`,
+        (SELECT `status`.status FROM `status` WHERE `status`.`id` = `news`.`status`)AS`statusName`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `news`.`schoolId`)AS`schoolName` FROM `news`
+        <where>
+            <if test="status !=0 and status != null">
+                and `status` = #{status}
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+        ORDER BY `time` DESC limit #{from},#{pageSize}
+    </select>
+    <select id="countAdmin" resultType="int">
+        SELECT count(*),(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `news`.`userId`)AS`qq`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `news`.`schoolId`)AS`schoolName` FROM `news`
+        <where>
+            <if test="status !=0 and status != null">
+                and `status` = #{status}
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+    <update id="pass" parameterType="int">
+        update `news` set `status` = 4 where `id`=#{id}
+    </update>
+    <update id="noPass" parameterType="int">
+        update `news` set `status` = 5 where `id`=#{id}
+    </update>
+
+    <delete id="delByUser" parameterType="int">
+        delete from `news` where `userId` = #{userId}
+    </delete>
+    <select id="getNewsListByUser" resultType="News">
+        select * from `news` where `userId` = #{userId}
+    </select>
+</mapper>

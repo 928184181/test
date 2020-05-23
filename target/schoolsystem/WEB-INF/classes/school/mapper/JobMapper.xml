@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="school.mapper.JobMapper">
+    <select id="getJob" resultType="Job">
+        SELECT * FROM `job` WHERE `status`=4 ORDER BY `time` DESC LIMIT 0,20
+    </select>
+    <select id="count" resultType="int">
+        SELECT count(*),(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`qq`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `job`.`schoolId`)AS`schoolName` FROM `job`
+        <where>
+            `status` = 4
+            <if test="userId !=0 and userId != null">
+                and `userId` = #{userId}
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+    <select id="getJobList" resultType="Job">
+        SELECT `job`.*,(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`qq`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `job`.`schoolId`)AS`schoolName` FROM `job`
+        <where>
+            `status` = 4
+            <if test="userId !=0 and userId != null">
+                and `userId` = #{userId}
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+        ORDER BY `time` DESC limit #{from},#{pageSize}
+    </select>
+    <insert id="insertJob" parameterType="Job">
+        insert into `job`(`title`,`content`,`userId`,`time`,`schoolId`,`sum`,`status`)values (#{title},#{content},#{userId},#{time},#{schoolId},#{sum},#{status})
+    </insert>
+    <select id="myCount" resultType="int">
+        SELECT count(*),(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`qq`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `job`.`schoolId`)AS`schoolName` FROM `job`
+         where `userId` = #{userId}
+    </select>
+    <select id="getMyJobList" resultType="Job">
+        SELECT `job`.*,(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`qq`,
+        (select `status`.status from `status` where `job`.`status`= `status`.`id`)as `statusName`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `job`.`schoolId`)AS`schoolName` FROM `job`
+        where `userId` = #{userId}
+         ORDER BY `time` DESC limit #{from},#{pageSize}
+    </select>
+    <select id="findJobId" resultType="Job">
+        select * from `job` where id = #{id}
+    </select>
+    <update id="updateClick">
+        update `job` set `sum` = #{sum} where `id` = #{id}
+    </update>
+    <delete id="delJob" parameterType="int">
+        delete from `job` where `id` = #{id}
+    </delete>
+    <select id="findJob" resultType="Job">
+        SELECT `job`.*,(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`qq`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `job`.`schoolId`)AS`schoolName` FROM `job`
+        where `id` = #{id}
+    </select>
+
+
+    <select id="getJobListAdmin" resultType="Job">
+        SELECT `job`.*,(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`qq`,
+        (SELECT `status`.status FROM `status` WHERE `status`.`id` = `job`.`status`)AS`statusName`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `job`.`schoolId`)AS`schoolName` FROM `job`
+        <where>
+            <if test="status !=0 and status != null">
+                and `status` = #{status}
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+        ORDER BY `time` DESC limit #{from},#{pageSize}
+    </select>
+    <select id="countAdmin" resultType="int">
+        SELECT count(*),(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `job`.`userId`)AS`qq`,
+        (SELECT `status`.status FROM `status` WHERE `status`.`id` = `job`.`status`)AS`statusName`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `job`.`schoolId`)AS`schoolName` FROM `job`
+        <where>
+            <if test="status !=0 and status != null">
+                and `status` = #{status}
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+    <update id="pass" parameterType="int">
+        update `job` set `status` = 4 where `id`=#{id}
+    </update>
+    <update id="noPass" parameterType="int">
+        update `job` set `status` = 5 where `id`=#{id}
+    </update>
+    <delete id="delByUser" parameterType="int">
+        delete from `job` where `userId` = #{userId}
+    </delete>
+</mapper>

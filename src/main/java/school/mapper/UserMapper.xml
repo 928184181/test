@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="school.mapper.UserMapper">
+    <select id="getUserByCode" resultType="Users">
+        select * from `users` where `userCode`= #{userCode}
+    </select>
+    <insert id="addUser" parameterType="Users">
+        insert into `users`(`userCode`,`userName`,`password`,`phone`,`qq`,`weixin`,`schoolId`)values (#{userCode},#{userName},#{password},#{phone},#{qq},#{weixin},#{schoolId})
+    </insert>
+    <select id="findUsers" resultType="Users">
+        select *,(SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `users`.`schoolId`)AS`schoolName`
+        from `users` where `id` = #{id}
+    </select>
+    <update id="changeUsers" parameterType="Users">
+        update `users`
+        <set>
+            <if test="userName != null and userName!=''">
+                `userName`= #{userName},
+            </if>
+            <if test="password != null and password!=''">
+                `password`= #{password},
+            </if>
+            <if test="phone != null and phone!=''">
+                `phone`= #{phone},
+            </if>
+            <if test="qq != null and qq!=''">
+                `qq`= #{qq},
+            </if>
+            <if test="weixin != null and weixin!=''">
+                `weixin`= #{weixin},
+            </if>
+            <if test="schoolId != null and schoolId!=0">
+                `schoolId`= #{schoolId},
+            </if>
+        </set>
+        where `id`=#{id}
+    </update>
+    <select id="getUser" resultType="Users">
+        select * from `users` where `userCode`= #{userCode} and `password` = #{password}
+    </select>
+    <select id="getUsersAdmin" resultType="Users">
+        select *,(SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `users`.`schoolId`)AS`schoolName`
+        from `users`
+        <where>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="userName != null and userName != ''">
+                and `userName` like concat ('%',#{userName},'%')
+            </if>
+        </where>
+        order by `time` desc limit #{from},#{pageSize}
+    </select>
+    <select id="countAdmin" resultType="int">
+        select count(*) from `users`
+        <where>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="userName != null and userName != ''">
+                and `userName` like concat ('%',#{userName},'%')
+            </if>
+        </where>
+    </select>
+    <delete id="delUser" parameterType="int">
+        delete from `users` where `id` = #{id}
+    </delete>
+</mapper>

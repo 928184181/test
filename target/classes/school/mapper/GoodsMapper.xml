@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="school.mapper.GoodsMapper">
+    <insert id="addGoods" parameterType="Goods">
+        insert into `goods`(`title`,`userId`,`count`,`price`,`status`,`schoolId`,`content`,`pictureName`,`pictureAdd`,`time`,`sortId`)values
+        (#{title},#{userId},#{count},#{price},#{status},#{schoolId},#{content},#{pictureName},#{pictureAdd},#{time},#{sortId})
+    </insert>
+    <select id="findGoods" resultType="Goods">
+        select * from `goods` where `status` = 4 order by `time` desc limit 0,12
+    </select>
+    <select id="findGoodsById" resultType="Goods">
+        SELECT `goods`.*,(SELECT `users`.`userName` FROM `users` WHERE `users`.`id`=`goods`.`userId`)AS `userName`,
+(SELECT `users`.`phone` FROM `users` WHERE `users`.`id`=`goods`.`userId`)AS `phone`,
+(SELECT `users`.`qq` FROM `users` WHERE `users`.`id`=`goods`.`userId`)AS `qq`,
+(SELECT `users`.`weixin` FROM `users` WHERE `users`.`id`=`goods`.`userId`)AS `weixin`,
+(SELECT `status`.`status` FROM `status` WHERE `status`.`id` = `goods`.`status`)AS `statusName`
+FROM `goods` where `id` = #{id}
+    </select>
+    <select id="getGoodsList" resultType="Goods">
+        SELECT `goods`.*,(SELECT `users`.`userName` FROM `users` WHERE `users`.`id`=`goods`.`userId`)AS `userName`,
+        (SELECT `school`.`schoolName` FROM`school` WHERE `goods`.`schoolId` = `school`.`id`) AS `schoolName`
+        FROM `goods`
+        <where>
+            `status` = 4 and `count` != 0
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+            <if test="sortId != null and sortId != ''">
+                and `sortId` = #{sortId}
+            </if>
+        </where>
+        ORDER BY `time` DESC limit #{from},#{pageSize}
+    </select>
+    <select id="count" resultType="int">
+        SELECT count(*),(SELECT `users`.`userName` FROM `users` WHERE `users`.`id`=`goods`.`userId`)AS `userName`,
+        (SELECT `school`.`schoolName` FROM`school` WHERE `goods`.`schoolId` = `school`.`id`) AS `schoolName`
+        FROM `goods`
+        <where>
+            `status` = 4 and `count` != 0
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+            <if test="sortId != null and sortId != 0">
+                and `sortId` = #{sortId}
+            </if>
+        </where>
+    </select>
+    <select id="getMyGoodsList" resultType="Goods">
+        SELECT `goods`.*,(SELECT `status`.`status` FROM`status` WHERE `status`.`id` = `goods`.`status`) AS `statusName`
+        FROM `goods` where `userId` = #{userId}
+        ORDER BY `time` DESC limit #{from},#{pageSize}
+    </select>
+    <select id="myCount" resultType="int">
+        SELECT COUNT(*),(SELECT `status`.`status` FROM`status` WHERE `status`.`id` = `goods`.`status`) AS `statusName`
+        FROM `goods` where `userId` = #{userId}
+    </select>
+    <delete id="delGoods" parameterType="int">
+        delete from `goods` where `id` = #{id}
+    </delete>
+    <update id="updateGoods" parameterType="Goods">
+        update `goods`
+        <set>
+            <if test="title != null and title != ''">
+                `title` = #{title},
+            </if>
+            <if test="content != null and content != ''">
+                `content` = #{content},
+            </if>
+            <if test="pictureName != null and pictureName != ''">
+                `pictureName` = #{pictureName},
+            </if>
+            <if test="pictureAdd != null and pictureAdd != ''">
+                `pictureAdd` = #{pictureAdd},
+            </if>
+            <if test="count != 0 and count != null">
+                `count` = #{count},
+            </if>
+            <if test="price != 0 and price != null">
+                `price` = #{price},
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                `schoolId` = #{schoolId},
+            </if>
+        </set>
+        where `id`=#{id}
+    </update>
+
+    <select id="getGoodsListAdmin" resultType="Goods">
+        SELECT `goods`.*,(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `goods`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `goods`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `goods`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `goods`.`userId`)AS`qq`,
+        (SELECT `status`.status FROM `status` WHERE `status`.`id` = `goods`.`status`)AS`statusName`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `goods`.`schoolId`)AS`schoolName` FROM `goods`
+        <where>
+            <if test="status !=0 and status != null">
+                and `status` = #{status}
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+        ORDER BY `time` DESC limit #{from},#{pageSize}
+    </select>
+    <select id="countAdmin" resultType="int">
+        SELECT count(*),(SELECT `users`.userName FROM `users` WHERE `users`.`id` = `goods`.`userId`)AS`userName`,
+        (SELECT `users`.phone FROM `users` WHERE `users`.`id` = `goods`.`userId`)AS`phone`,
+        (SELECT `users`.weixin FROM `users` WHERE `users`.`id` = `goods`.`userId`)AS`weixin`,
+        (SELECT `users`.qq FROM `users` WHERE `users`.`id` = `goods`.`userId`)AS`qq`,
+        (SELECT `status`.status FROM `status` WHERE `status`.`id` = `goods`.`status`)AS`statusName`,
+        (SELECT `school`.schoolName FROM `school` WHERE `school`.`id` = `goods`.`schoolId`)AS`schoolName` FROM `goods`
+        <where>
+            <if test="status !=0 and status != null">
+                and `status` = #{status}
+            </if>
+            <if test="schoolId != 0 and schoolId != null">
+                and `schoolId` = #{schoolId}
+            </if>
+            <if test="title != null and title != ''">
+                and `title` like concat ('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+    <update id="pass" parameterType="int">
+        update `goods` set `status` = 4 where `id`=#{id}
+    </update>
+    <update id="noPass" parameterType="int">
+        update `goods` set `status` = 5 where `id`=#{id}
+    </update>
+    <delete id="delByUser" parameterType="int">
+        delete from `goods` where `userId` = #{userId}
+    </delete>
+</mapper>
